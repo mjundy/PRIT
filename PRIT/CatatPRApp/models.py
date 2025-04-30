@@ -2,7 +2,7 @@ from django.db import models
 from django.utils.timezone import now
 
 # Create your models here.
-class StatusPR(models.Model): 
+class StatusPR(models.Model):
     status = models.CharField(max_length=255)
     def __str__(self):
         return self.status
@@ -32,3 +32,9 @@ class PR(models.Model):
     
     class Meta:
         ordering = ['-tgl_pr']
+
+class PartNumber(models.Model): 
+    partnumber = models.CharField(max_length=255, blank=True, unique=False)
+    partname = models.CharField(max_length=100)
+    uom = models.CharField(max_length=50, blank=True)
+    jenis_part = models.ForeignKey(JenisPart, on_delete=models.CASCADE, null=False, blank=False)

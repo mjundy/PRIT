@@ -139,15 +139,15 @@
                                         {% for pr in list_pr %}
                                          <tr>
                                             <td class="{%if pr.expired%} table-danger {%endif%}">{{ forloop.counter}}</td>
-                                            <td class="{%if pr.expired%} table-danger {%endif%}">{{ pr.tgl_pr|date:"Y-m-d" }}</td>
-                                            <td class="{%if pr.expired%} table-danger {%endif%}">{{ pr.tgl_sent_to_purchase|date:"Y-m-d"|default:"-"}}</td>
+                                            <td class="{%if pr.expired%} table-danger {%endif%}">{{ pr.tgl_pr|date:'SHORT_DATE_FORMAT'}}</td>
+                                            <td class="{%if pr.expired%} table-danger {%endif%}">{{ pr.tgl_sent_to_purchase|date:'SHORT_DATE_FORMAT'}}</td>
                                             <td class="{%if pr.expired%} table-danger {%endif%}">{{ pr.jenis_part}}</td>
                                             <td class="{%if pr.expired%} table-danger {%endif%}">{{ pr.partnumber|default:"-"}}</td>
                                             <td class="{%if pr.expired%} table-danger {%endif%}">{{ pr.partname}}</td>
                                             <td class="{%if pr.expired%} table-danger {%endif%}">{{ pr.qty}}</td>
                                             <td class="{%if pr.expired%} table-danger {%endif%}">{{ pr.deskripsi|default:"-"}}</td>
                                             <td class="{%if pr.expired%} table-danger {%endif%}">{{ pr.status}}</td>
-                                            <td class="{%if pr.expired%} table-danger {%endif%}">{{ pr.durasi|default:"+"}} hari</td>
+                                            <td class="{%if pr.expired%} table-danger {%endif%}">{{ pr.age|default:"+"}} hari</td>
                                             <td class="{%if pr.expired%} table-danger {%endif%}">{{ pr.expired|yesno:"Yes,No" }}</td>
                                             <td><a class="btn" href="{% url 'update_pr' pk=pr.id %}">
                                                 <i class="far fa-edit"></i>

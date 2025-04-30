@@ -30,6 +30,8 @@ def export_received_pr_xls(request):
     response['Content-Disposition']= 'attachment; filename=received_pr.xlsx'
     return response"""
 
+
+#class untuk View List PR Outstanding
 class ListPR(ListView):
     template_name = 'crud_pr/tables.html'
     model = PR
@@ -70,7 +72,9 @@ class ListPR(ListView):
         if id_status.status == "Sent to Purchase":
             form.instance.tgl_sent_to_purchase = now()
             return super().form_valid(form)
-    
+
+#class untuk List PR dengan status Received
+
 class ListReceivedPR(ListView):
     template_name = 'crud_pr/received_tables.html'
     model = PR
@@ -190,3 +194,6 @@ class UpdateJenisPart(UpdateView):
 class DeleteJenisPart(DeleteView):
     model = JenisPart
     success_url = reverse_lazy('list_jenis_part')
+
+
+#class ListPartNumber

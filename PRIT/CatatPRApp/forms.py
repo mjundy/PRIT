@@ -1,5 +1,5 @@
 from django import forms
-from .models import PR, JenisPart, StatusPR
+from .models import PR, JenisPart, StatusPR, PartNumber
 
 class PRForm(forms.ModelForm):
     class Meta:
@@ -45,4 +45,20 @@ class JenisPartForm(forms.ModelForm):
         fields = ['jenis_part']
         widgets = {
             'jenis_part': forms.TextInput(attrs={'class': 'form-control'}),
+        }
+
+class PartNumberForm(forms.ModelForm):
+    class Meta:
+        model = PartNumber
+        fields = [
+            'partnumber',
+            'partname',
+            'uom',
+            'jenis_part'
+            ]
+        widget = {
+            'partnumber': forms.TextInput(attrs={'class': 'form-control'}),
+            'partname': forms.TextInput(attrs={'class': 'form-control'}),
+            'uom': forms.TextInput(attrs={'class': 'form-control'}),
+            'jenis_part': forms.Select(attrs={'class': 'form-control'}),
         }
