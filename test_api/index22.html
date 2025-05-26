@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prayer Times</title>
+</head>
+<body>
+    <h1>Today's Prayer Times</h1>
+    <ul id="prayerTimes">
+        <!-- Prayer times will be displayed here -->
+    </ul>
+
+    <script>
+        async function fetchPrayerTimes() {
+            const apiKey = 'http://api.aladhan.com/v1/timingsByCity/17-04-2024?city=Jakarta&country=Indonesia&method=8'; // Get your API key from https://aladhan.com/prayer-times-api
+            const city = 'jakarta;
+            const country = 'indonesia';
+            const method = 2; // Adjust method according to your preference, 2 for Islamic Society of North America (ISNA)
+
+            const url = `https://api.aladhan.com/v1/calendarByCity?city=${city}&country=${country}&method=${method}&annual=true`;
+
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+
+                // Extracting today's date
+                const today = new Date();
+                const todayFormatted = today.toISOString().slice(0, 10);
+
+                // Finding today's prayer times
+                const prayerTimes = data.data.find(item => item.date.gregorian.date === todayFormatted);
+
+                // Displaying prayer times
+                const prayerTimesList = document.getElementById('prayerTimes');
+                for (const [key, value] of Object.entries(prayerTimes.timings)) {
+                    const listItem = document.createElement('li');
+                    listItem.textContent = `${key}: ${value}`;
+                    prayerTimesList.appendChild(listItem);
+                }
+            } catch (error) {
+                console.log("Error fetching prayer times:", error);
+            }
+        }
+
+        // Call the function to fetch prayer times when the page loads
+        window.onload = fetchPrayerTimes;
+    </script>
+</body>
+</html>

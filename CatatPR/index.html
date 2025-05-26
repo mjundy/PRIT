@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daftar Permintaan dan Pembelian Barang</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous"></link>
+</head>
+<body>
+    <div class="container">
+        <h1>Daftar Permintaan dan Pembelian Barang</h1>
+        <button onclick="window.location.href='input.html'">Tambah Data</button>
+        
+        <table id="itemTable">
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Tanggal PR</th>
+                    <th>Partnumber</th>
+                    <th>Partname</th>
+                    <th>UoM</th>
+                    <th>Qty</th>
+                    <th>Status</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
+            <tbody id="itemList">
+                <tr class="table table-striped"></tr>
+                <!-- Daftar barang akan ditampilkan di sini -->
+            </tbody>
+        </table>
+    </div>
+    <script src="index.js"></script>
+    <script> 
+    // Fungsi untuk render tabel
+function renderTable(data) {
+    const tableBody = document.getElementById('tableBody');
+    tableBody.innerHTML = '';
+
+    data.forEach((item, index) => {
+        const row = document.createElement('tr');
+
+        row.innerHTML = `
+            <td>${index + 1}</td>
+            <td>${item.tanggalPR}</td>
+            <td>${item.partNumber || "-"}</td>
+            <td>${item.partName}</td>
+            <td>${item.uom}</td>
+            <td>${item.qty}</td>
+            <td>
+                <select class="status-dropdown" data-id="${item.id}">
+                    <option value="Sent to Purchase" ${item.status === 'Sent to Purchase' ? 'selected' : ''}>Sent to Purchase</option>
+                    <option value="Received" ${item.status === 'Received' ? 'selected' : ''}>Received</option>
+                    <option value="Canceled" ${item.status === 'Canceled' ? 'selected' : ''}>Canceled</option>
+                </select>
+            </td>
+            <td><button class="delete-btn" data-id="${item.id}">Hapus</button></td>
+        `;
+
+        tableBody.appendChild(row);
+    });
+
+    // Event listener untuk dropdown status
+    document.querySelectorAll('.status-dropdown').forEach(dropdown => {
+        dropdown.addEventListener('change', async (event) => {
+            const itemId = event.target.getAttribute('data-id');
+            const newStatus = event.target.value;
+
+            // Popup peringatan konfirmasi perubahan status
+            const confirmChange = window.confirm("Apakah Anda yakin ingin mengubah status item ini?");
+            if (!confirmChange) {
+                // Jika pengguna membatalkan, kembalikan dropdown ke status awal
+                const originalItem = data.find(item => item.id === parseInt(itemId));
+                event.target.value = originalItem.status;
+                return;
+            }
+
+            // Kirim permintaan ke server untuk memperbarui status jika pengguna mengonfirmasi
+            await fetch(`/api/items/${itemId}/status`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ status: newStatus })
+            });
+
+            // Refresh data setelah pembaruan
+            loadItems();
+        });
+    });
+
+    // Event listener untuk tombol hapus
+    document.querySelectorAll('.delete-btn').forEach(button => {
+        button.addEventListener('click', async (event) => {
+            const itemId = event.target.getAttribute('data-id');
+            const confirmDelete = window.confirm("Apakah Anda yakin ingin menghapus item ini?");
+            if (!confirmDelete) return;
+
+            await fetch(`/api/items/${itemId}`, {
+                method: 'DELETE'
+            });
+
+            // Refresh data setelah penghapusan
+            loadItems();
+        });
+    });
+}
+
+// Fungsi untuk memuat item dari server
+async function loadItems() {
+    const response = await fetch('/api/items');
+    const data = await response.json();
+    renderTable(data);
+}
+
+// Memuat item saat halaman pertama kali di-load
+loadItems();
+
+
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+    <div id="confirmModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Konfirmasi Perubahan Status</h2>
+            <p>Apakah Anda yakin ingin mengubah status ini?</p>
+            <textarea id="reasonInput" placeholder="Masukkan alasan (Opsional)" rows="3"></textarea>
+            <button id="confirmButton">Konfirmasi</button>
+            <button id="cancelButton">Batal</button>
+        </div>
+    </div>
+</body>
+</html>

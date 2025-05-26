@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block content %}
+<form action="{{ request.uri }}" method="post" id="login-form" class="form-vertical">
+    {% autoescape None %}
+    <h2 class="form-signin-heading">Please sign in</h2>
+    {% for field in form %}
+        <div class="form-group">
+            <!--! {{ field.label(class_="form-label") }} -->
+            <div class="input-group input-group-lg">
+                {{ field(class_="form-control input-lg", placeholder=field.name) }}
+            </div>
+            {% if field.errors %}
+                {% for error in field.errors %}
+                    <div class="form-group help-block has-warning"><span style="color: blue;"> {{error}} </span> </div>
+                {% end %}
+            {% end %}
+        </div>
+    {% end %}
+    <input type="submit" class="btn btn-default btn-md" value="{{ _("Log in") }}" />
+    {% module xsrf_form_html() %}
+</form>
+{% end %}
+
+{% block script %}
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#login-form').formValidation({
+            feedbackIcons: {
+                valid: 'glyphicon glyphicon-ok',
+                invalid: 'glyphicon glyphicon-remove',
+                validating: 'glyphicon glyphicon-refresh'
+            },
+            fields: {
+                name: {
+                    verbose: false,
+                    threshold: 3,
+                    validators: {
+                        notEmpty: {
+                            message: 'Username is required'
+                        },
+
+                        remote: {
+                            url: '/api/check/user',
+                            message: 'The username is not available'
+                        }
+
+                    }
+                },
+                password: {
+                    validators: {
+                        notEmpty: {
+                            message: 'User password is required'
+                        },
+                    }
+                },
+            }
+        })
+    });
+</script>
+{% end %}
+

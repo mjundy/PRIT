@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+    <head>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta http-equiv="Content-type" content="text/html; charset=utf-8"/>
+      <title>
+          {% block title %}{% end %}
+      </title>
+      <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+      <link rel="icon" href="/favicon.ico" type="image/x-icon">
+      <!-- Bootstrap -->
+      <link href="{{static_url("vendor/css/bootstrap.min.css")}}" rel="stylesheet" media="screen">
+      <link href="{{static_url("vendor/css/bootstrap-theme.min.css")}}" rel="stylesheet" type="text/css" media="screen">
+      <link href="{{static_url("vendor/css/bootstrap-datetimepicker.min.css")}}" rel="stylesheet" type="text/css" media="screen">
+      <link href="{{static_url("vendor/css/logo-nav.css")}}" rel="stylesheet" type="text/css" media="screen">
+      <link href="{{static_url("vendor/css/bootstrap-table.min.css")}}" rel="stylesheet" type="text/css" media="screen">
+      <!-- <link href="{{static_url("vendor/css/prettify.css")}}" rel="stylesheet" type="text/css" media="screen"> -->
+      <!-- <link href="{{static_url("vendor/css/fuelux.min.css")}}" rel="stylesheet" type="text/css" media="screen"> -->
+      <link href="{{static_url("vendor/css/formValidation.min.css")}}" rel="stylesheet" type="text/css" media="screen">
+
+      <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+      <!--[if lt IE 9]>
+          <script src="../../assets/js/html5shiv.js"></script>
+          <script src="../../assets/js/respond.min.js"></script>
+      <![endif]-->
+    </head>
+    <body>
+
+    <!-- Main navigation -->
+<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+  <div class="container">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#"><img src="{{ static_url("images/logo-4.png")}}"  height="50" width="95" text=LOGO" alt=""></a>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="/">Home</a></li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Transaksi <b class="caret"></b></a>
+          <ul class="dropdown-menu">
+            <li><a href="/trans">Your transaction</a></li>
+            <li class="divider"></li>
+            <li><a href="/trans/create">New</a></li>
+            <li class="divider"></li>
+            <li><a href="#">Separated link</a></li>
+            <li class="divider"></li>
+            <li><a href="#">One more separated link</a></li>
+          </ul>
+        </li>
+      </ul>
+
+      <!-- form search -->
+
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="/register"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+        <li>{% if not current_user %}
+                <a href="/auth/login"><span class="glyphicon glyphicon-log-in"></span> Login</a>
+            {% else %}
+                <a href="/auth/logout"><span class="glyphicon glyphicon-logout"></span> {{ current_user }}<b class="caret"></b> Logout</a>
+            {% end %}
+        </li>
+      </ul>
+      
+    </div><!-- /.navbar-collapse -->
+  </div>
+</nav>
+
+    <div class="container">
+        {% block content %}{% end %}
+    </div>
+
+
+
+        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+        <!-- <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script> -->
+        <script src="{{ static_url("vendor/js/jquery-2.1.1.min.js")}}"></script>
+        <script src="{{ static_url("vendor/js/bootstrap.min.js")}}"></script>
+
+        <script src="{{ static_url("vendor/js/knockout-3.2.0.js")}}"></script>
+        <script src="{{ static_url("vendor/js/knockout.validation.min.js")}}"></script>
+        <script src="{{ static_url("vendor/js/jquery-validate/jquery.validate.min.js")}}"></script>
+        <script src="{{ static_url("vendor/js/formValidation.min.js")}}"></script>
+        <script src="{{ static_url("vendor/js/framework/bootstrap.min.js")}}"></script>
+        <script src="{{ static_url("vendor/js/bootstrap-datetimepicker.min.js")}}"></script>
+        <script src="{{ static_url("vendor/js/autoNumeric.js")}}"></script>
+        <script src="{{ static_url("vendor/js/bootstrap-table/bootstrap-table.min.js")}}"></script>
+        <script src="{{ static_url("vendor/js/bootstrap-table/extensions/export/bootstrap-table-export.js")}}"></script>
+        <script src="{{ static_url("vendor/js/fuelux.min.js")}}"></script>
+        <script src="{{ static_url("vendor/js/jquery.bootstrap.wizard.min.js")}}"></script>
+
+        <script src="{{ static_url("vendor/js/jquery-validate/additional-methods.min.js")}}"></script>
+        <script src="{{ static_url("vendor/js/jquery.price_format.2.0.min.js")}}"></script>
+
+
+    <!-- Include spesific js script -->
+
+    {% block script %} {% end %}
+
+
+    <footer>
+    <div>
+        <center>
+        <p>&copy; {{ _("Dompetku") }} 2014 ver 1.0</p>
+            <a href="/terms">Terms & Conditions</a>
+        </center>
+    </div>
+    </footer>
+
+
+    </body>
+</html>
+

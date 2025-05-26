@@ -1,0 +1,31 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form method = "post">
+        {% csrf_token %}
+        <div class="form-floating mb-3">
+        <input class="form-control" id="no_machine" name="no_machine" type="text" placeholder="No
+        Machine" />
+        <label for="no_machine">No Machine</label>
+        </div>
+        <div class="form-floating mb-3">
+        <input class="form-control" id="code_machine" name="code_machine" type="text"
+        placeholder="Code Machine" />
+        <label for="code_machine">Code Machine</label>
+        </div>
+        <div class="form-group">
+        <textarea class="form-control" id="description" name="description"
+        placeholder="Description" rows="3"></textarea>
+        </div>
+        <div class="d-flex align-items-center justify-content-end mt-4 mb-0">
+        <button class="btn btn-primary" type="submit">Submit</button>
+        </div>
+    </form>
+</body>
+</html>

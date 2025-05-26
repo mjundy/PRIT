@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Input Data Permintaan dan Pembelian Barang</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Input Data Permintaan dan Pembelian Barang</h1>
+        <form id="itemForm">
+            <label for="tanggalPR">Tanggal PR:</label>
+            <input type="date" id="tanggalPR" required>
+
+            <label for="partNumber">Partnumber:</label>
+            <input type="text" id="partNumber">
+
+            <label for="partName">Partname:</label>
+            <input type="text" id="partName" required>
+
+            <label for="uom">UoM:</label>
+            <input type="text" id="uom" required>
+
+            <label for="qty">Qty:</label>
+            <input type="number" id="qty" required>
+
+            <label for="status">Status:</label>
+            <select id="status" required>
+                <option value="Sent to Purchase">Sent to Purchase</option>
+                <option value="Received">Received</option>
+                <option value="Canceled">Canceled</option>
+            </select>
+
+            <button type="submit">Simpan Data</button>
+        </form>
+    </div>
+    <script src="input.js"></script>
+</body>
+</html>

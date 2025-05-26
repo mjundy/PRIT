@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daftar Permintaan dan Pembelian Barang</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Daftar Permintaan dan Pembelian Barang</h1>
+        <button onclick="window.location.href='input.html'">Tambah Data</button>
+        
+        <table id="itemTable">
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Tanggal PR</th>
+                    <th>Partnumber</th>
+                    <th>Partname</th>
+                    <th>UoM</th>
+                    <th>Qty</th>
+                    <th>Status</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
+            <tbody id="itemList">
+                <!-- Daftar barang akan ditampilkan di sini -->
+            </tbody>
+        </table>
+    </div>
+    <script src="list.js"></script>
+</body>
+</html>

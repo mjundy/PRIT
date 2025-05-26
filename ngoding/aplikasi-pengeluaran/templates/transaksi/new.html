@@ -1,0 +1,94 @@
+{% extends "../base.html" %}
+
+{% block title %}New transaksi : {% end %}
+
+{% block content %}
+{% autoescape None %}
+        <form id="transaksi-form" method="post" class="form-horizontal">
+<div class="container-fluid">
+    <div class="fuelux">
+        <div id="MyWizard" class="wizard">
+    <ul class="steps">
+        <li class="active" data-step="1"><span class="badge badge-info">1</span>Campaign<span class="chevron"></span></li>
+        <li data-step="2"><span class="badge">2</span>Recipients<span class="chevron"></span></li>
+
+    </ul>
+    <div class="actions">
+        <button class="btn btn-default btn-prev"><span class="glyphicon glyphicon-arrow-left"></span>Prev</button>
+        <button class="btn btn-default btn-next" data-last="Complete">Next<span class="glyphicon glyphicon-arrow-right"></span></button>
+    </div>
+    <div class="step-content">
+        <div class="step-pane active sample-pane alert" data-step="1">
+            <div class="control-group">
+                    <label class="control-label">Email</label>
+                    <div class="controls">
+                        <input type="text" id="emailfield" name="emailfield" class="email">
+                    </div>
+            </div>
+
+            <div class="control-group">
+                    <label class="control-label">Name</label>
+                    <div class="controls">
+                        <input type="text" id="namefield" name="namefield" class="">
+                    </div>
+            </div>
+        </div>
+
+        <div class="step-pane sample-pane bg-info alert" data-step="2">
+            <div class="control-group">
+                    <label class="control-label">URL</label>
+                    <div class="controls">
+                        <input type="text" id="urlfield" name="urlfield" class="url">
+                    </div>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+    </div>
+</div>
+</form>
+
+{% end %}
+
+{% block script %}
+<script type="text/javascript">
+
+$(document).ready(function() {
+
+    var $validator = $("#transaksi-form").validate({
+		  rules: {
+		    emailfield: {
+		      required: true,
+		      email: true,
+		      minlength: 3
+		    },
+		    namefield: {
+		      required: true,
+		      minlength: 3
+		    },
+		    urlfield: {
+		      required: true,
+		      minlength: 3,
+		      url: true
+		    }
+		  }
+		});
+
+		$('#MyWizard').wizard().on('change', function(e, data) {
+    var isValid = $('#stepId [required]').valid();
+    if (data.direction === 'next' && !isValid) {
+        e.preventDefault();
+    };
+
+ });
+
+});
+
+
+
+</script>
+
+
+{% end %}

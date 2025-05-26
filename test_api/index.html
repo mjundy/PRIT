@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>Alpine JS Fetch API</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css" />
+  <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+</head>
+
+<body class="container">
+    <script type=text/javascript>
+    $(document).ready(function() {
+    var monthNames = [ "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember" ]; 
+    var dayNames = ["Ahad","Senin","Selasa","Rabu","Kamis","Juma't","Sabtu"];
+    var newDate = new Date();
+	newDate.setDate(newDate.getDate());
+    $('#Date').html(dayNames[newDate.getDay()] + ', ' + newDate.getDate() + ' ' + monthNames[newDate.getMonth()] + ' ' + newDate.getFullYear());
+    setInterval( function() {
+	    var currentTime = getDateTime();
+    $("#jam-kanan").html(currentTime);
+    },1000);
+    });
+  <table
+     x-data="{ some_json: [] }"
+     x-init="fetch('http://api.aladhan.com/v1/timingsByCity/17-04-2024?city=Jakarta&country=Indonesia&method=8')
+              .then(response => response.json())
+              .then(data => some_json = data)"
+     class="table is-bordered bg-primary is-centered mt-6 mx-auto"
+  >
+    <thead>
+    <th>
+        <td x-text="some_json.data.date.readable" class="has-text-link-dark"></td>
+    </th>    
+    <tr>
+      <th class="has-background-link-light has-text-link">Fajr</th>
+      <th class="has-background-link-light has-text-link">Sunrise</th>
+      <th class="has-background-link-light has-text-link">Dhuhr</th>
+      <th class="has-background-link-light has-text-link">Asr</th>
+      <th class="has-background-link-light has-text-link">Sunset</th>
+      <th class="has-background-link-light has-text-link">Maghrib</th>
+      <th class="has-background-link-light has-text-link">Isha</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!--template> ="user in some_json"-->
+        <tr>
+          <td x-text="some_json.data.timings.Fajr"></td>
+          <td x-text="some_json.data.timings.Sunrise" ></td>
+          <td x-text="some_json.data.timings.Dhuhr"></td>
+          <td x-text="some_json.data.timings.Asr"></td>
+          <td x-text="some_json.data.timings.Sunset"></td>
+          <td x-text="some_json.data.timings.Maghrib"></td>
+          <td x-text="some_json.data.timings.Isha"></td>
+        </tr>
+      <!--/template-->
+    </tbody>
+  </table>
+</script>
+</body>
+
+</html>

@@ -1,0 +1,142 @@
+{% extends "../base.html" %}
+{% block content %}
+<div class="container">
+    <div class="row">
+        <button class="btn btn-default btn-sm" data-toggle="modal" data-target="#news-modal"> Create</button>
+    </div>
+</div>
+
+<div class="container">
+    {% for item in data %}
+    <form action="/news/{{item.mid}}/delete" method="post">
+    {% module xsrf_form_html() %}
+    <input type=hidden name="mid" value="{{ item.mid}}"></>
+
+    <div class="list-group">
+        <div class="media">
+            <a href="#" class="pull-left">
+                <img src="{{ static_url("images/news.png")}}" class="media-object img-circle img-responsive" alt="Sample Image">
+            </a>
+            <div class="media-body">
+                <h4 class="media-heading">{{ item.title}}</h4>
+                <p>{{ item.body }}</p>
+                <h5><p><small><i>Posted by :</i> {{ item.author.name }} on {{item.created }} </small></p></h5>
+                <p>
+                    <button type=submit class="btn btn-link btn-sm"><i class="glyphicon glyphicon-trash"></i></button>
+                </p>
+            </div>
+
+        </div>
+    </div>
+
+    </form>
+
+    {% end %}
+
+</div>
+
+
+
+<div class="modal fade" id="news-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Create new info</h4>
+            </div>
+
+            <div class="modal-body">
+                <!-- The form is placed inside the body of modal -->
+                <form id="news-form" method="post" class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">Title</label>
+                        <div class="col-sm-5">
+                            <input type="text" class="form-control" name="title" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">Body</label>
+                        <div class="col-sm-5">
+                            <textarea class="form-control" name="body"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">Created at</label>
+                        <div class="col-sm-5">
+                            <input type="text" class="form-control input-group date" id="datetimepicker" name="created" data-date-format="yyyy-mm-dd hh:mm:ss" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-sm-5 col-sm-offset-3">
+                            <button type="submit" class="btn btn-default">Insert</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+{% end %}
+
+{% block script %}
+<script type="text/javascript">
+
+
+$(document).ready(function() {
+    $('#datetimepicker').datetimepicker({
+        pickTime: false
+        });
+    $('#news-form').bootstrapValidator({
+        feedbackIcons: {
+            valid: 'glyphicon glyphicon-ok',
+            invalid: 'glyphicon glyphicon-remove',
+            validating: 'glyphicon glyphicon-refresh'
+        },
+        fields: {
+            title: {
+                validators: {
+                    notEmpty: {
+                        message: 'The title is required'
+                    }
+                }
+            },
+            body: {
+                validators: {
+                    notEmpty: {
+                        message: 'The body is required'
+                    }
+                }
+            },
+            created: {
+                validators: {
+                    notEmpty: {
+                        message: 'Created is required'
+                    },
+                    date: {
+                        format: 'YYYY-MM-DD h:m:s',
+                        message: 'The value is not a valid date'
+                    }
+                }
+            }
+        }
+    });
+    $('#datetimepicker').on('dp.change dp.show', function(e) {
+        $('#news-form').bootstrapValidator('revalidateField', 'meeting');
+    });
+
+});
+
+
+$('#news-modal').on('shown.bs.modal', function() {
+    $('#news-form').bootstrapValidator('resetForm', true);
+});
+
+</script>
+
+{% end %}

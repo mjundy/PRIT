@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Demo Websocket menggunakan Tornado!</title>
+    </head>
+    <body>	
+    <h1>Demo Websocket menggunakan Tornado!</h1>
+    <p>Selamat datang di demo Websocket...</p>
+    <input type="button" value="Tekan Ini!" onclick="sendMsg();" />
+    <br/>
+    <br/>
+    <div id="message">
+        Loading....
+    </div>
+    <script src="https://code.jquery.com/jquery-3.0.0.min.js"></script>
+    <script type="text/javascript">
+        var ws = new WebSocket("ws://localhost:8888/messenger");
+
+        ws.onopen = function() {
+           ws.send("Hello, world");
+        };
+
+        ws.onmessage = function (evt) {
+            console.log(evt.data);
+            $('#message').prepend(evt.data+'<br/>');
+        };
+
+        function sendMsg(){
+            ws.send('Pesan yang dikirimkan: ' + new Date());
+        }
+
+    </script>
+    </body>
+</html>

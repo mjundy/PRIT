@@ -1,0 +1,25 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    {% for mesin in list_mesin %}
+<tr>
+<td>{{ mesin.code_machine }}</td>
+<td>{{ mesin.no_machine }}</td>
+<td>{{ mesin.description }}</td>
+<td>{{ mesin.is_active }}</td>
+<td><a class="btn btn-primary ml-2" href="{% url 'update_mesin' pk=mesin.pk %}">Edit</a>
+<form action="{% url 'delete_mesin' pk=mesin.pk %}" method="post" style="display:inline;">
+{% csrf_token %}
+<button class="btn btn-danger" type="submit">Delete</button>
+</form></td>
+</tr>
+{% endfor %}
+</body>
+</html>
+

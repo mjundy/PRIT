@@ -1,0 +1,86 @@
+{% extends "../base.html" %}
+
+{% block title %}New Message : {% end %}
+
+{% block content %}
+<form id="news-form" action="{{request.path}}" method="post">
+    <div class="form-group">
+        <label>Title</label>
+        <input type="text" class="form-control" name="title" />
+    </div>
+
+    <div class="form-group">
+        <label>body</label>
+        <textarea type="text" class="form-control" name="body"></textarea>
+    </div>
+
+    <div class="form-group">
+        <label>Created at</label>
+            <input type="text" class="form-control input-group date" id="datetimepicker" name="created" data-date-format="yyyy-mm-dd hh:mm:ss" />
+    </div>
+
+    <div class="form-group">
+        <button type="submit" class="btn btn-default">Insert</button>
+    </div>
+</form>
+
+
+{% module xsrf_form_html() %}
+{% end %}
+
+
+
+{% block script %}
+<script type="text/css">
+
+</script>
+
+<script type="text/javascript">
+$(document).ready(function() {
+    $('#datetimepicker').datetimepicker({
+        pickTime : false
+        }).on('dp.change dp.show', function(e) {
+            $('#news-form').bootstrapValidator('revalidateField', 'created');
+    });
+
+    $('#news-form').bootstrapValidator({
+        feedbackIcons: {
+            valid: 'glyphicon glyphicon-ok',
+            invalid: 'glyphicon glyphicon-remove',
+            validating: 'glyphicon glyphicon-refresh'
+        },
+        fields: {
+            title: {
+                validators: {
+                    notEmpty: {
+                        message: 'The title is required'
+                    }
+                }
+            },
+            body: {
+                validators: {
+                    notEmpty: {
+                        message: 'The body is required'
+                    }
+                }
+            },
+            created: {
+                validators: {
+                    notEmpty: {
+                        message: 'Created is required'
+                    },
+                    date: {
+                        format: 'YYYY-MM-DD h:m:s',
+                        message: 'The value is not a valid date'
+                    }
+                }
+            }
+        }
+    }).on('status.field.bv', function(e, data) {
+            if (data.bv.getSubmitButton()) {
+                data.bv.disableSubmitButtons(false);
+            }
+    });
+});
+</script>
+{% end %}

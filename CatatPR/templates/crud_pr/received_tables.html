@@ -1,0 +1,157 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>Purchase Request List</title>
+        <!-- Menambahkan CSS DataTables -->
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+        <!-- Menambahkan jQuery dan JS DataTables -->
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+        <link href="{% static 'css/styles.css' %}" rel="stylesheet" />
+        <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    </head>
+    <body class="sb-nav-fixed">
+        <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
+            <!-- Navbar Brand-->
+            <a class="navbar-brand ps-3" href="{% url 'list_pr'%}">PR IT FLN</a>
+            <!-- Sidebar Toggle-->
+            <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
+            <!-- Navbar Search-->
+            <!--form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
+                <iv class="input-group">
+                    <input class="form-control" type="text" placeholder="Search for..." aria-label="Search for..." aria-describedby="btnNavbarSearch" />
+                    <button class="btn btn-primary" id="btnNavbarSearch" type="button"><i class="fas fa-search"></i></button>
+                </iv>
+            </!--form>
+            <--Navbar-->
+            <!--ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="#!">Settings</a></li>
+                        <li><a class="dropdown-item" href="#!">Activity Log</a></li>
+                        <li><hr class="dropdown-divider" /></li>
+                        <li><a class="dropdown-item" href="#!">Logout</a></li>
+                    </ul>
+                </li>
+            </!--ul-->
+        </nav>
+        <div id="layoutSidenav">
+            <div id="layoutSidenav_nav">
+                <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+                    <div class="sb-sidenav-menu">
+                        <div class="nav">
+                            <div class="sb-sidenav-menu-heading"></div>
+                            <a class="nav-link" href="{% url 'list_pr'%}">
+                                <div class="sb-nav-link-icon"><i class="fas fa-angle-down"></i></div>
+                                PR List
+                            </a>
+                            <a class="nav-link" href="{% url 'list_status_pr'%}">
+                                <div class="sb-nav-link-icon"><i class="fas fa-angle-down"></i></i></div>
+                                PR Status
+                            </a>
+                        </div>
+                    </div>  
+                </nav>
+            </div>
+            <div id="layoutSidenav_content">
+                <main>
+                    <div class="container-fluid px-4">
+                        <h1 class="mt-lg-5"></h1> 
+                        <h3 class="font weight-bold">Received PR List</h3>
+                        <!--ol class="breadcrumb mb-4">
+                            <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
+                            <li class="breadcrumb-item active">Tables</li>
+                        </!--ol>
+                        <div-- class="card mb-4">
+                            <div class="card-body">
+                                DataTables is a third party plugin that is used to generate the demo table below. For more information about DataTables, please visit the
+                                <a target="_blank" href="https://datatables.net/">official DataTables documentation</a>
+                                .
+                            </div>
+                        </div-->
+                        <!--a href ="{% url 'register_pr'%}" class="btn btn-danger" type="submit">Tambah Data</!--a>
+                        <a-- href ="{% url 'list_status_pr'%}" class="btn btn-danger" type="submit">List Status PR</a-->
+                        <h1 class="mt-lg-1"></h1>
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <!--i class="fas fa-table me-1"></!--i-->
+                                <a href ="{% url 'register_pr'%}" class="btn btn-primary" type="submit">Add Data</a>
+                                <a href ="{% url 'list_pr'%}" class="btn btn-danger" type="submit">Back</a>
+                                <a href ="{% url 'export_received_pr_xls'%}" class="btn btn-success" type="submit">Export .xlsx</a>
+                                <!--a href ="{% url 'list_status_pr'%}" class="btn btn-danger" style="margin-left: 700px;" type="submit">List Status PR</!--a-->
+                            </div>
+                            <div class="card-body table-responsive">
+                                <table class='table table-sm table-bordered' id="example">
+                                    <thead>
+                                        <tr>
+                                                <th>No</th>
+                                                <th>Tgl PR</th>
+                                                <th>Tgl PR ke Purchasing</th>
+                                                <th>Tgl Terima</th>
+                                                <th>Part Number</th>
+                                                <th>Part Name</th>
+                                                <th>Qty</th>
+                                                <th>Deskripsi</th>
+                                                <th>Status</th>
+                                                <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for pr in list_received_pr %}
+                                         <tr>
+                                            <td>{{ forloop.counter}}</td>
+                                            <td>{{ pr.tgl_pr}}</td>
+                                            <td>{{ pr.tgl_sent_to_purchase|date|default:"-"}}</td>
+                                            <td>{{ pr.tgl_terima|date|default:"-"}}</td>
+                                            <td>{{ pr.partnumber|default:"-"}}</td>
+                                            <td>{{ pr.partname}}</td>
+                                            <td>{{ pr.qty}}</td>
+                                            <td>{{ pr.deskripsi|default:"-"}}</td>
+                                            <td>{{ pr.status}}</td>
+                                            <td><a class="btn" href="{% url 'update_pr' pk=pr.id %}">
+                                                <i class="far fa-edit"></i>
+                                            </a>
+                                                <form action="{% url 'delete_pr' pk=pr.id %}" method="post" style="display:inline;">
+                                                    {% csrf_token %}
+                                                    <button class="btn" type="submit" onclick="return confirm('Anda yakin mau menghapus data ini?');">
+                                                        <i class="fa fa-trash"></i>
+                                                    </button>
+                                                    </form>
+                                            </td>
+                                        {% endfor %}    
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+                <footer class="py-4 bg-light mt-auto">
+                    <div class="container-fluid px-4">
+                        <div class="d-flex align-items-center justify-content-between small">
+                            <div class="text-muted">Copyright &copy; 2024 - IT PT. Frina Lestari Nusantara</div>
+                            <div>
+                                <a href="#">Privacy Policy</a>
+                                &middot;
+                                <a href="#">Terms &amp; Conditions</a>
+                            </div>
+                        </div>
+                    </div>
+                </footer>
+            </div>
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+        <script src="{% static 'js/scripts.js' %}"></script>
+        <script>$(document).ready(function() {
+            $('#example').DataTable();
+          });
+          </script>
+    </body>
+</html>
